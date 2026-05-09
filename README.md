@@ -46,6 +46,32 @@ Verified response
 
 ---
 
+## Playground UI
+
+KVI Guard now includes a browser playground.
+
+Start the server:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Open:
+
+```text
+http://127.0.0.1:8000
+```
+
+The playground allows you to:
+
+- test prompts
+- run verification
+- inspect confidence
+- inspect contradiction analysis
+- test regeneration behavior
+
+---
+
 ## Demo
 
 Run the first local verification demo:
@@ -126,6 +152,12 @@ pip install -r requirements.txt
 
 ```bash
 uvicorn app.main:app --reload
+```
+
+### Open Playground
+
+```text
+http://127.0.0.1:8000
 ```
 
 ### Open API docs
