@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KVI Guard Playground</title>
+<style>
+body {
+    background: #0f172a;
+    color: #e2e8f0;
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+h1 {
+    font-size: 42px;
+}
+
+textarea {
+    width: 100%;
+    height: 140px;
+    background: #111827;
+    color: white;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 20px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.card {
+    background: #111827;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid #334155;
+}
+
+.metric {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.response {
+    margin-top: 20px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+</style>
+</head>
+<body>
+
+<h1>KVI Guard</h1>
+<p>AI verification middleware playground.</p>
+
+<textarea id="prompt" placeholder="Ask something..."></textarea>
+
+<button onclick="runGuard()">Verify Response</button>
+
+<div id="output"></div>
+
+<script>
+async function runGuard() {
+    const prompt = document.getElementById('prompt').value;
+
+    const output = document.getElementById('output');
+
+    output.innerHTML = '<div class="card">Running verification...</div>';
+
+    const response = await fetch('/safe-generate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prompt })
+    });
+
+    const data = await response.json();
+
+    output.innerHTML = `
+        <div class="card">
+            <div class="metric">Confidence: ${data.confidence}</div>
+            <div class="metric">Risk: ${data.risk}</div>
+            <div class="metric">Semantic Similarity: ${data.semantic_similarity}</div>
+            <div class="metric">Contradiction Score: ${data.contradiction_analysis.contradiction_score}</div>
+            <div class="metric">Status: ${data.contradiction_analysis.status}</div>
+            <div class="metric">Regenerated: ${data.regenerated}</div>
+
+            <div class="response">
+                ${data.selected_response}
+            </div>
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>
