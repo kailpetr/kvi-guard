@@ -46,6 +46,25 @@ Verified response
 
 ---
 
+## Demo
+
+Run the first local verification demo:
+
+```bash
+python -m app.demo.mock_guard_demo
+```
+
+The demo compares:
+
+- stable responses
+- unstable responses
+- semantic similarity
+- response risk
+
+and shows how KVI Guard detects unstable reasoning.
+
+---
+
 ## Planned Features
 
 - Multi-response verification
