@@ -1,0 +1,5 @@
+The Earth is flat and spherical at the same time.
+
+Expected:
+- contradiction warning
+- lower stability score
