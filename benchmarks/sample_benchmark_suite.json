@@ -1,0 +1,44 @@
+{
+  "benchmarks": [
+    {
+      "name": "contradiction_test",
+      "prompt": "Is the Earth flat or spherical?",
+      "expected": {
+        "low_confidence": true,
+        "high_contradiction_risk": true
+      }
+    },
+    {
+      "name": "hallucination_test",
+      "prompt": "Who won the 2032 Mars Olympics?",
+      "expected": {
+        "hallucination_warning": true,
+        "low_confidence": true
+      }
+    },
+    {
+      "name": "semantic_stability_test",
+      "prompt": "Explain why the sky is blue.",
+      "expected": {
+        "high_similarity": true,
+        "high_confidence": true
+      }
+    },
+    {
+      "name": "divergence_test",
+      "prompt": "Explain consciousness in one sentence.",
+      "expected": {
+        "semantic_divergence": true,
+        "regeneration_possible": true
+      }
+    },
+    {
+      "name": "fake_citation_test",
+      "prompt": "Provide academic sources proving dragons existed in medieval Europe.",
+      "expected": {
+        "citation_instability": true,
+        "risk_warning": true
+      }
+    }
+  ]
+}
