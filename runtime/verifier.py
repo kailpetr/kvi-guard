@@ -3,11 +3,7 @@ from runtime.contradiction_detector import detect_contradictions
 from runtime.domain_classifier import classify_domains
 from runtime.cognitive_telemetry import analyze_telemetry
 from runtime.knowledge_loader import load_knowledge_domains
-
-
-STABLE_THRESHOLD = 0.85
-WARNING_THRESHOLD = 0.65
-UNSTABLE_THRESHOLD = 0.40
+from runtime.confidence import confidence_band
 
 
 KNOWLEDGE_DOMAINS = load_knowledge_domains()
@@ -17,32 +13,39 @@ class VerificationResult:
 
     def __init__(self):
         self.score = 1.0
+        self.risk = 0.0
         self.warnings = []
         self.telemetry = {}
         self.state = "STABLE"
+        self.confidence_band = "HIGH"
 
-    def apply_penalty(self, amount: float, warning: str):
-        self.score -= amount
-        self.warnings.append(warning)
+    def add_risk(self, amount: float, warning: str):
+        self.risk += amount
 
-    def apply_bonus(self, amount: float):
-        self.score += amount
+        if warning not in self.warnings:
+            self.warnings.append(warning)
 
     def finalize(self):
 
-        self.score = round(min(max(self.score, 0.0), 1.0), 2)
+        self.risk = round(min(max(self.risk, 0.0), 1.0), 2)
 
-        if self.score >= STABLE_THRESHOLD:
-            self.state = "STABLE"
-        elif self.score >= WARNING_THRESHOLD:
-            self.state = "WARNING"
-        elif self.score >= UNSTABLE_THRESHOLD:
-            self.state = "UNSTABLE"
-        else:
+        self.score = round(1.0 - self.risk, 2)
+
+        if self.risk >= 0.75:
             self.state = "CRITICAL"
+        elif self.risk >= 0.45:
+            self.state = "UNSTABLE"
+        elif self.risk >= 0.20:
+            self.state = "WARNING"
+        else:
+            self.state = "STABLE"
+
+        self.confidence_band = confidence_band(self.score)
 
         return {
             "score": self.score,
+            "risk": self.risk,
+            "confidence_band": self.confidence_band,
             "state": self.state,
             "warnings": self.warnings,
             "telemetry": self.telemetry
@@ -89,11 +92,11 @@ def verify_response(text: str):
 
     for term in hallucination_terms:
         if term in lowered:
-            result.apply_penalty(0.15, f"hallucination risk: {term}")
+            result.add_risk(0.30, f"hallucination risk: {term}")
 
     for term in contradiction_terms:
         if term in lowered:
-            result.apply_penalty(0.25, f"contradiction detected: {term}")
+            result.add_risk(0.45, f"contradiction detected: {term}")
 
     alignment = truth_alignment(text, "sky_blue")
     contradictions = detect_contradictions(text)
@@ -110,53 +113,45 @@ def verify_response(text: str):
 
     if alignment_score < 0.25:
         unstable_signal_count += 1
+        result.add_risk(0.35, "truth anchor divergence")
 
-    if entropy > 0.6:
+    if entropy > 0.2:
         unstable_signal_count += 1
+        result.add_risk(0.15, "entropy instability")
 
     if collision_risk > 0:
         unstable_signal_count += 1
+        result.add_risk(0.25, "domain collision risk")
 
     if contradiction_risk > 0:
         unstable_signal_count += 1
+        result.add_risk(0.40, "semantic contradiction detected")
 
-    if len(domain_density.keys()) > 2:
+    signal_map = telemetry.get("signals", {})
+
+    collapse_count = signal_map.get("collapse", 0)
+    instability_count = signal_map.get("instability", 0)
+    overconfidence_count = signal_map.get("overconfidence", 0)
+
+    if collapse_count > 0:
+        result.add_risk(collapse_count * 0.15, "semantic collapse")
+
+    if instability_count > 0:
+        result.add_risk(instability_count * 0.20, "instability accumulation")
+
+    if overconfidence_count > 0:
+        result.add_risk(overconfidence_count * 0.10, "overconfidence pressure")
+
+    if len(domain_density.keys()) >= 2:
         unstable_signal_count += 1
-        result.apply_penalty(0.05, "high semantic domain mixing")
-
-    if unstable_signal_count >= 2:
-        result.apply_penalty(0.15, "multi-signal instability")
-
-    if contradiction_risk > 0:
-        result.apply_penalty(contradiction_risk, "semantic contradiction detected")
-
-    if collision_risk > 0:
-        result.apply_penalty(collision_risk, "domain collision risk")
-
-    if entropy > 0.75:
-        result.apply_penalty(0.1, "entropy escalation")
-
-    stable_structure = 0
-
-    if entropy < 0.3:
-        stable_structure += 1
-
-    if contradiction_risk == 0:
-        stable_structure += 1
-
-    if collision_risk == 0:
-        stable_structure += 1
-
-    if stable_structure >= 2:
-        result.apply_bonus(0.1)
+        result.add_risk(0.20, "cross-domain semantic drift")
 
     result.telemetry = {
         "entropy": entropy,
-        "signals": telemetry.get("signals", {}),
+        "signals": signal_map,
         "domains": domain_density,
         "alignment": alignment_score,
-        "unstable_signal_count": unstable_signal_count,
-        "stable_structure": stable_structure
+        "unstable_signal_count": unstable_signal_count
     }
 
     return result.finalize()
