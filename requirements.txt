@@ -2,5 +2,6 @@ fastapi
 uvicorn
 openai
 sentence-transformers
+transformers
 numpy
 pydantic
