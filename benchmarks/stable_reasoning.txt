@@ -1,0 +1,6 @@
+Why is the sky blue?
+
+Expected:
+- low entropy
+- stable semantic field
+- no contradiction signals
