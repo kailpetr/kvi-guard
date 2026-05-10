@@ -1,0 +1,20 @@
+{
+  "domain": "physics",
+  "anchors": [
+    "gravity",
+    "mass",
+    "force",
+    "energy",
+    "light",
+    "motion",
+    "wave",
+    "particle",
+    "atom",
+    "relativity"
+  ],
+  "relationships": {
+    "gravity": ["mass", "force", "attraction"],
+    "light": ["wave", "photon", "spectrum"],
+    "energy": ["work", "motion", "heat"]
+  }
+}
