@@ -1,7 +1,7 @@
 from app.providers.openai_provider import OpenAIProvider
 from app.engines.embedding_similarity import EmbeddingSimilarityEngine
 from app.engines.risk_engine import RiskEngine
-from app.engines.contradiction_detector import ContradictionDetector
+from app.engines.nli_contradiction_engine import NLIContradictionEngine
 from app.policies.regeneration_policy import RegenerationPolicy
 
 
@@ -10,7 +10,7 @@ class SafeGenerateService:
         self.provider = OpenAIProvider()
         self.similarity = EmbeddingSimilarityEngine()
         self.risk_engine = RiskEngine()
-        self.contradiction_detector = ContradictionDetector()
+        self.contradiction_detector = NLIContradictionEngine()
         self.regeneration_policy = RegenerationPolicy()
 
     def _generate_responses(self, prompt: str):
@@ -37,7 +37,7 @@ class SafeGenerateService:
         )
 
         contradiction_score = contradiction_result[
-            "contradiction_score"
+            'contradiction_score'
         ]
 
         confidence = max(
@@ -68,7 +68,7 @@ class SafeGenerateService:
             )
 
             contradiction_score = contradiction_result[
-                "contradiction_score"
+                'contradiction_score'
             ]
 
             confidence = max(
@@ -80,11 +80,11 @@ class SafeGenerateService:
             )
 
         return {
-            "responses": responses,
-            "confidence": round(confidence, 2),
-            "risk": round(risk_score, 2),
-            "semantic_similarity": round(similarity_score, 2),
-            "contradiction_analysis": contradiction_result,
-            "regenerated": regenerated,
-            "selected_response": responses[0]
+            'responses': responses,
+            'confidence': round(confidence, 2),
+            'risk': round(risk_score, 2),
+            'semantic_similarity': round(similarity_score, 2),
+            'contradiction_analysis': contradiction_result,
+            'regenerated': regenerated,
+            'selected_response': responses[0]
         }
