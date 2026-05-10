@@ -1,0 +1,17 @@
+{
+  "domain": "logic",
+  "anchors": [
+    "consistency",
+    "contradiction",
+    "premise",
+    "conclusion",
+    "inference",
+    "causality",
+    "reasoning"
+  ],
+  "relationships": {
+    "contradiction": ["inconsistency", "logical conflict"],
+    "inference": ["premise", "conclusion"],
+    "consistency": ["coherence", "stability"]
+  }
+}
