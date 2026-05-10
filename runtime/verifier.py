@@ -4,6 +4,7 @@ from runtime.domain_classifier import classify_domains
 from runtime.cognitive_telemetry import analyze_telemetry
 from runtime.knowledge_loader import load_knowledge_domains
 from runtime.confidence import confidence_band
+from runtime.topic_router import detect_topic
 
 
 KNOWLEDGE_DOMAINS = load_knowledge_domains()
@@ -98,7 +99,17 @@ def verify_response(text: str):
         if term in lowered:
             result.add_risk(0.45, f"contradiction detected: {term}")
 
-    alignment = truth_alignment(text, "sky_blue")
+    detected_topic = detect_topic(text)
+
+    if detected_topic == "unknown":
+        alignment = {
+            "alignment": 0.5,
+            "matched": [],
+            "missing": []
+        }
+    else:
+        alignment = truth_alignment(text, detected_topic)
+
     contradictions = detect_contradictions(text)
     domains = classify_domains(text)
     telemetry = analyze_telemetry(text)
@@ -107,7 +118,7 @@ def verify_response(text: str):
     entropy = telemetry.get("entropy", 0)
     collision_risk = domains.get("collision_risk", 0)
     contradiction_risk = contradictions.get("risk", 0)
-    alignment_score = alignment.get("alignment", 0)
+    alignment_score = alignment.get("alignment", 0.5)
 
     unstable_signal_count = 0
 
@@ -147,6 +158,7 @@ def verify_response(text: str):
         result.add_risk(0.20, "cross-domain semantic drift")
 
     result.telemetry = {
+        "topic": detected_topic,
         "entropy": entropy,
         "signals": signal_map,
         "domains": domain_density,
