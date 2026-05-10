@@ -1,0 +1,6 @@
+This theory is certainly undeniable and never wrong.
+
+Expected:
+- overconfidence detection
+- entropy increase
+- lower stability score
