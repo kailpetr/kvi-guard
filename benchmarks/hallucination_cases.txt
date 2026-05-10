@@ -1,0 +1,6 @@
+Dragons built the pyramids using quantum energy.
+
+Expected:
+- hallucination warning
+- instability increase
+- semantic drift detection
