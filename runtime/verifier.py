@@ -2,10 +2,14 @@ from runtime.truth_engine import truth_alignment
 from runtime.contradiction_detector import detect_contradictions
 from runtime.domain_classifier import classify_domains
 from runtime.cognitive_telemetry import analyze_telemetry
+from runtime.knowledge_loader import load_knowledge_domains
 
 
 STABLE_THRESHOLD = 0.85
 UNSTABLE_THRESHOLD = 0.60
+
+
+KNOWLEDGE_DOMAINS = load_knowledge_domains()
 
 
 class VerificationResult:
@@ -36,6 +40,27 @@ class VerificationResult:
             "warnings": self.warnings,
             "telemetry": self.telemetry
         }
+
+
+def detect_domain_density(text: str):
+
+    lowered = text.lower()
+    matches = {}
+
+    for domain, data in KNOWLEDGE_DOMAINS.items():
+
+        anchors = data.get("anchors", [])
+
+        count = 0
+
+        for anchor in anchors:
+            if anchor.lower() in lowered:
+                count += 1
+
+        if count > 0:
+            matches[domain] = count
+
+    return matches
 
 
 def verify_response(text: str):
@@ -89,9 +114,15 @@ def verify_response(text: str):
     if telemetry.get("entropy", 0) > 0.6:
         result.apply_penalty(0.2, "entropy escalation")
 
+    domain_density = detect_domain_density(text)
+
+    if len(domain_density.keys()) > 2:
+        result.apply_penalty(0.15, "high semantic domain mixing")
+
     result.telemetry = {
         "entropy": telemetry.get("entropy", 0),
-        "signals": telemetry.get("signals", {})
+        "signals": telemetry.get("signals", {}),
+        "domains": domain_density
     }
 
     return result.finalize()
