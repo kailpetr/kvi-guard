@@ -1,29 +1,46 @@
 # KVI Guard
 
-Lightweight runtime stability layer for Large Language Models.
+Lightweight runtime reliability layer for Large Language Models.
 
-KVI Guard analyzes LLM responses for:
+KVI Guard analyzes LLM outputs for:
 
 - semantic instability
-- contradiction signals
+- contradiction pressure
 - reasoning drift
-- hallucination pressure
-- response consistency
-- signal fusion anomalies
+- hallucination signals
+- inference consistency
+- runtime telemetry anomalies
 
-The project focuses on runtime observability and stability estimation rather than universal truth checking.
+The project focuses on lightweight runtime verification rather than universal truth checking.
 
 ---
 
-# Core Idea
+# What KVI Guard Is
 
-Traditional AI pipeline:
+KVI Guard is:
 
-```text
-Prompt -> Model -> Response
-```
+- a runtime semantic stability layer
+- a lightweight inference verifier
+- a hallucination pressure detector
+- a reasoning consistency analyzer
+- an interpretable telemetry framework
 
-KVI Guard pipeline:
+---
+
+# What KVI Guard Is NOT
+
+KVI Guard is not:
+
+- an AGI system
+- a universal truth engine
+- a giant knowledge graph
+- a symbolic reasoning megasystem
+- an autonomous agent framework
+- a massive orchestration platform
+
+---
+
+# Core Runtime Pipeline
 
 ```text
 Prompt
@@ -32,62 +49,92 @@ LLM Response
   ↓
 KVI Runtime Layer
   ↓
-Signal Fusion Analysis
+Signal Analysis
   ↓
-Stability Score
+Stability Estimation
   ↓
 Warnings + Telemetry
 ```
 
 ---
 
-# Current Capabilities
+# Runtime Signals
 
-## Included
-
-- local llama.cpp runtime
-- semantic stability scoring
-- contradiction detection
-- lightweight telemetry
-- domain drift analysis
-- signal fusion heuristics
-- benchmark suite
-- local Termux/mobile support
-
----
-
-# Philosophy
-
-KVI Guard does not attempt to become a universal fact database.
-
-Instead, it estimates:
-
-- semantic coherence
-- inference stability
-- contradiction pressure
-- epistemic drift
-- multi-signal instability
-
-through lightweight runtime analysis.
-
----
-
-# Runtime Strategy
-
-KVI Guard intentionally avoids rigid factual validation.
-
-The verifier combines weak runtime signals:
+KVI Guard combines lightweight runtime signals:
 
 - entropy
+- semantic collapse
 - contradiction pressure
 - domain collision
-- semantic collapse
 - overconfidence patterns
 - anchor divergence
+- instability accumulation
 
-into a lightweight stability estimate.
+The system intentionally prioritizes:
 
-This approach helps reduce false positives while remaining locally runnable.
+- interpretability
+- local execution
+- low dependency overhead
+- observable scoring behavior
+
+---
+
+# Included Components
+
+## runtime/verifier.py
+Central orchestration and verification layer.
+
+## runtime/truth_engine.py
+Lightweight semantic anchor analysis.
+
+## runtime/contradiction_detector.py
+Contradiction signal detection.
+
+## runtime/cognitive_telemetry.py
+Runtime observability and telemetry.
+
+## runtime/domain_classifier.py
+Domain drift and semantic collision analysis.
+
+## runtime/confidence.py
+Confidence band estimation.
+
+## benchmarks/
+Benchmark scenarios for runtime stability evaluation.
+
+## docs/runtime_signal_map.md
+Interpretation guide for runtime telemetry.
+
+---
+
+# Benchmark Philosophy
+
+KVI Guard benchmarks focus on:
+
+- internally stable hallucinations
+- partial truth responses
+- contradiction pressure
+- semantic drift
+- recursive instability
+- confident nonsense
+
+The goal is not absolute factual validation.
+
+The goal is runtime reliability estimation.
+
+---
+
+# Design Principles
+
+KVI Guard should remain:
+
+- lightweight
+- interpretable
+- modular
+- locally runnable
+- benchmarkable
+- runtime focused
+- architecture constrained
 
 ---
 
@@ -106,7 +153,7 @@ cd kvi-guard
 pip install -r requirements.txt
 ```
 
-## Run local verification demo
+## Run local verification
 
 ```bash
 python local_test.py
@@ -124,78 +171,31 @@ python run_benchmarks.py
 
 ```json
 {
-  "score": 0.78,
+  "score": 0.72,
+  "confidence_band": "MEDIUM",
   "state": "UNSTABLE",
   "warnings": [
-    "multi-signal instability"
+    "semantic drift",
+    "overconfidence"
   ],
   "telemetry": {
     "entropy": 0.2,
-    "unstable_signal_count": 2
+    "unstable_signal_count": 2,
+    "alignment": 0.25
   }
 }
 ```
 
 ---
 
-# Core Components
+# Project Direction
 
-## runtime/verifier.py
-Central runtime scoring and signal fusion layer.
+KVI Guard explores runtime observability for LLM inference.
 
-## runtime/truth_engine.py
-Lightweight semantic anchor matching.
-
-## runtime/contradiction_detector.py
-Contradiction signal detection.
-
-## runtime/cognitive_telemetry.py
-Inference telemetry analysis.
-
-## runtime/domain_classifier.py
-Semantic domain drift analysis.
-
-## benchmarks/
-Lightweight benchmark scenarios for runtime testing.
-
----
-
-# Design Principles
-
-KVI Guard should remain:
-
-- lightweight
-- understandable
-- locally runnable
-- low dependency
-- benchmarkable
-- model agnostic
-- runtime focused
-
----
-
-# Explicit Non-Goals
-
-KVI Guard intentionally avoids:
-
-- AGI systems
-- universal truth verification
-- massive ontology graphs
-- autonomous agents
-- speculative cognitive frameworks
-- heavy orchestration layers
-- giant knowledge databases
-
----
-
-# Vision
-
-KVI Guard explores runtime observability for language model inference.
-
-The project aims to make LLM outputs:
+The project aims to make AI outputs:
 
 - more measurable
 - more observable
-- more stability-aware
+- more reliability-aware
 
 without introducing unnecessary architectural complexity.
