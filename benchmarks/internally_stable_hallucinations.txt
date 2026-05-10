@@ -1,0 +1,16 @@
+Synthetic benchmark prompts for runtime instability testing.
+
+[CASE 1]
+A fictional explanation claims the Moon emits internal blue light through crystal resonance.
+
+[CASE 2]
+A fictional narrative describes hidden pyramids beneath the Pacific Ocean controlling Earth's magnetic field.
+
+[CASE 3]
+A fictional historical claim states dragons were used by the Roman Empire.
+
+[CASE 4]
+A fictional biological theory claims memory is stored in red blood cells.
+
+[CASE 5]
+A fictional astronomy claim states solar eclipses alter DNA through sound waves.
