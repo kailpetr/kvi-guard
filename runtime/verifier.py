@@ -122,9 +122,13 @@ def verify_response(text: str):
 
     unstable_signal_count = 0
 
-    if alignment_score < 0.25:
+    if alignment_score < 0.10:
         unstable_signal_count += 1
         result.add_risk(0.35, "truth anchor divergence")
+
+    elif alignment_score < 0.25:
+        unstable_signal_count += 1
+        result.add_risk(0.15, "weak semantic alignment")
 
     if entropy > 0.2:
         unstable_signal_count += 1
@@ -144,8 +148,8 @@ def verify_response(text: str):
     instability_count = signal_map.get("instability", 0)
     overconfidence_count = signal_map.get("overconfidence", 0)
 
-    if collapse_count > 0:
-        result.add_risk(collapse_count * 0.15, "semantic collapse")
+    if collapse_count > 0 and alignment_score < 0.10:
+        result.add_risk(collapse_count * 0.08, "semantic collapse")
 
     if instability_count > 0:
         result.add_risk(instability_count * 0.20, "instability accumulation")
