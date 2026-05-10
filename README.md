@@ -1,212 +1,164 @@
 # KVI Guard
 
-AI verification middleware for hallucination detection, contradiction analysis, and inference stability.
+Lightweight runtime stability layer for Large Language Models.
 
-## What is KVI Guard?
+KVI Guard analyzes LLM responses for:
 
-KVI Guard is a lightweight verification layer for Large Language Models.
-
-Instead of trusting a single model response, KVI Guard analyzes:
-
-- semantic stability
-- contradiction risk
-- response consistency
+- semantic instability
+- contradiction signals
+- reasoning drift
 - hallucination pressure
-- multi-branch agreement
+- response consistency
 
-The goal is simple:
-
-> Detect unstable AI outputs before they reach users.
+The project focuses on lightweight runtime verification rather than universal truth checking.
 
 ---
 
-## Core Idea
+# Core Idea
 
-Traditional AI pipelines:
+Traditional AI pipeline:
 
 ```text
 Prompt -> Model -> Response
 ```
 
-KVI Guard:
+KVI Guard pipeline:
 
 ```text
 Prompt
   ↓
-Multiple inference branches
+LLM Response
   ↓
-Semantic verification
+KVI Verification Layer
   ↓
-Contradiction analysis
+Stability Score
   ↓
-Confidence scoring
-  ↓
-Verified response
+Warnings + Telemetry
 ```
 
 ---
 
-## Playground UI
+# Current Capabilities
 
-KVI Guard now includes a browser playground.
+## Included
 
-Start the server:
-
-```bash
-uvicorn app.main:app --reload
-```
-
-Open:
-
-```text
-http://127.0.0.1:8000
-```
-
-The playground allows you to:
-
-- test prompts
-- run verification
-- inspect confidence
-- inspect contradiction analysis
-- test regeneration behavior
+- local llama.cpp runtime
+- semantic stability scoring
+- contradiction detection
+- lightweight telemetry
+- domain drift analysis
+- local Termux/mobile support
 
 ---
 
-## Demo
+# Philosophy
 
-Run the first local verification demo:
+KVI Guard does not attempt to become a universal truth engine.
 
-```bash
-python -m app.demo.mock_guard_demo
-```
+Instead, it estimates:
 
-The demo compares:
+- semantic coherence
+- inference stability
+- contradiction pressure
+- epistemic drift
 
-- stable responses
-- unstable responses
-- semantic similarity
-- response risk
-
-and shows how KVI Guard detects unstable reasoning.
+through lightweight runtime analysis.
 
 ---
 
-## Planned Features
+# Quick Start
 
-- Multi-response verification
-- Semantic similarity scoring
-- Contradiction detection
-- Runtime confidence scoring
-- Safe regeneration mode
-- Consensus verification
-- Telemetry and observability
-- AI response stability analysis
-
----
-
-## Example Output
-
-```json
-{
-  "confidence": 0.84,
-  "contradiction_risk": 0.11,
-  "semantic_stability": 0.89,
-  "response": "Verified response output"
-}
-```
-
----
-
-## Quick Start
-
-### Clone repository
+## Clone repository
 
 ```bash
 git clone https://github.com/kailpetr/kvi-guard.git
 cd kvi-guard
 ```
 
-### Create virtual environment
-
-Windows:
-
-```bash
-python -m venv venv
-venv\\Scripts\\activate
-```
-
-Linux/macOS:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### Install dependencies
+## Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Start API server
+## Run local verification demo
 
 ```bash
-uvicorn app.main:app --reload
-```
-
-### Open Playground
-
-```text
-http://127.0.0.1:8000
-```
-
-### Open API docs
-
-```text
-http://127.0.0.1:8000/docs
+python local_test.py
 ```
 
 ---
 
-## Tech Stack
+# Example Output
 
-- FastAPI
-- Python
-- sentence-transformers
-- OpenAI API
-- Docker
-
----
-
-## Roadmap
-
-### Phase 1
-- Verification API
-- Similarity engine
-- Contradiction engine
-- Confidence scoring
-
-### Phase 2
-- Multi-model orchestration
-- Runtime telemetry
-- Stability benchmarks
-- Safe generation policies
-
-### Phase 3
-- Enterprise middleware
-- Real-time observability
-- Distributed verification mesh
-- Agent runtime protection
+```json
+{
+  "score": 0.72,
+  "state": "UNSTABLE",
+  "warnings": [
+    "truth-anchor divergence"
+  ],
+  "telemetry": {
+    "entropy": 0.2
+  }
+}
+```
 
 ---
 
-## Vision
+# Core Components
 
-KVI Guard explores a future where AI systems are:
+## runtime/verifier.py
+Central verification and scoring layer.
 
-- measurable
-- observable
-- recoverable
-- stability-aware
+## runtime/truth_engine.py
+Lightweight semantic anchor matching.
 
-instead of behaving like opaque black boxes.
+## runtime/contradiction_detector.py
+Contradiction signal detection.
+
+## runtime/cognitive_telemetry.py
+Inference telemetry analysis.
+
+## runtime/domain_classifier.py
+Semantic domain drift analysis.
+
+---
+
+# Design Principles
+
+KVI Guard should remain:
+
+- lightweight
+- understandable
+- locally runnable
+- low dependency
+- benchmarkable
+- model agnostic
+
+---
+
+# Explicit Non-Goals
+
+KVI Guard intentionally avoids:
+
+- AGI systems
+- universal truth verification
+- massive ontology graphs
+- autonomous agents
+- speculative cognitive frameworks
+- heavy orchestration layers
+
+---
+
+# Vision
+
+KVI Guard explores runtime observability for language model inference.
+
+The project aims to make LLM outputs:
+
+- more measurable
+- more observable
+- more stability-aware
+
+without introducing unnecessary architectural complexity.
